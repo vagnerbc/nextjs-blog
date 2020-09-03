@@ -1,3 +1,4 @@
+import { GetStaticProps, GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -8,31 +9,15 @@ import Date from "../components/date";
 
 import utilStyles from "../styles/utils.module.css";
 
-/**
- * STATIC GENERATION
- */
-export async function getStaticProps() {
-  const allPostsData = getSortedPostsData();
-  return {
-    props: {
-      allPostsData,
-    },
-  };
-}
-
-/**
- * SERVER SIDE RENDERING
- */
-// export async function getServerSideProps(context) {
-//   const allPostsData = getSortedPostsData();
-//   return {
-//     props: {
-//       allPostsData,
-//     },
-//   };
-// }
-
-export default function Home({ allPostsData }) {
+export default function Home({
+  allPostsData,
+}: {
+  allPostsData: {
+    date: string;
+    title: string;
+    id: string;
+  }[];
+}) {
   return (
     <Layout home>
       <Head>
@@ -67,3 +52,27 @@ export default function Home({ allPostsData }) {
     </Layout>
   );
 }
+
+/**
+ * STATIC GENERATION
+ */
+export const getStaticProps: GetStaticProps = async () => {
+  const allPostsData = getSortedPostsData();
+  return {
+    props: {
+      allPostsData,
+    },
+  };
+};
+
+/**
+ * SERVER SIDE RENDERING
+ */
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const allPostsData = getSortedPostsData();
+//   return {
+//     props: {
+//       allPostsData,
+//     },
+//   };
+// };
